@@ -1,0 +1,76 @@
+version: "3.8"
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: web
+    command: sleep infinity
+    ports:
+      - 8080:8080
+      - 9000:8000
+    expose:
+      - 8080
+    volumes:
+      - ../:/workspace:cached
+    environment:
+      - JPDA_ADDRESS=8000
+      - JPDA_TRANSPORT=dt_socket
+    depends_on:
+      - db
+    networks:
+      - jbbsnw
+
+  db:
+    image: postgres:16-bullseye
+    container_name: db
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: dbuser
+      POSTGRES_PASSWORD: dbpassword1
+      POSTGRES_DB: jbbsdb
+    hostname: postgres
+    restart: always
+    user: root
+    tty: true
+    volumes:
+      - pgsql:/var/lib/postgresql
+    networks:
+      - jbbsnw
+
+  redis:
+    image: redis:7.0
+    container_name: redis
+    ports:
+      - 6379:6379
+    hostname: redis
+    command: redis-server --appendonly yes
+    volumes:
+      - redis:/data
+    networks:
+      - jbbsnw
+
+  altemis:
+    image: quay.io/artemiscloud/activemq-artemis-broker:artemis.2.32.0
+    container_name: altemis
+    hostname: altemis
+    restart: always
+    ports:
+      - 8161:8161
+      - 61616:61616
+    environment:
+      AMQ_USER: admin
+      AMQ_PASSWORD: admin
+    networks:
+      - jbbsnw
+
+volumes:
+  pgsql:
+  redis:
+  certs:
+
+networks:
+  jbbsnw:
+    driver: bridge
