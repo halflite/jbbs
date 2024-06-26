@@ -18,6 +18,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
     <resteasy.version>4.7.9.Final</resteasy.version>
+    <tomcat.version>11.0.0-M21</tomcat.version>
     <postgresql.version>42.7.3</postgresql.version>
 
   </properties>
@@ -41,16 +42,16 @@
       <artifactId>guice-servlet</artifactId>
       <version>7.0.0</version>
     </dependency>
-    <!-- Server/Jetty-->
+    <!-- Server-->
     <dependency>
-      <groupId>org.eclipse.jetty</groupId>
-      <artifactId>jetty-servlet</artifactId>
-      <version>11.0.21</version>
+      <groupId>org.apache.tomcat.embed</groupId>
+      <artifactId>tomcat-embed-core</artifactId>
+      <version>${tomcat.version}</version>
     </dependency>
     <dependency>
-      <groupId>jakarta.servlet</groupId>
-      <artifactId>jakarta.servlet-api</artifactId>
-      <version>6.1.0</version>
+      <groupId>org.apache.tomcat</groupId>
+      <artifactId>tomcat-servlet-api</artifactId>
+      <version>${tomcat.version}</version>
     </dependency>
     <!-- MVC -->
     <dependency>
@@ -68,6 +69,12 @@
       <groupId>org.freemarker</groupId>
       <artifactId>freemarker</artifactId>
       <version>2.3.33</version>
+    </dependency>
+    <!-- Config API -->
+    <dependency>
+      <groupId>org.eclipse.microprofile.config</groupId>
+      <artifactId>microprofile-config-api</artifactId>
+      <version>3.1</version>
     </dependency>
     <!-- Utils -->
     <dependency>
